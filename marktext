@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+appname="MarkText CLI"
+appver="0.0.1"
+appyr="2025"
+
+case "$1" in
+	-v|--version )
+		echo "$appname, version $appver"
+		echo "Copyright (c) $appyr Leonard Wu"
+		echo "MIT License"
+		echo "https://github.com/leonardw/marktext-cli"
+		exit 0
+		;;
+	-h|--help )
+		echo "Usage: $0 [-v|--version|-h|--help] filename..."
+		exit 0
+		;;
+esac
+
+OS="$(uname -s)"
+
+findMacApp() {
+	SEARCH_DIRS="${HOME}/Applications/:/Applications/"
+	SEARCH_BINS="marktext.app/Contents/MacOS/marktext:MarkText.app/Contents/MacOS/MarkText:Mark Text.app/Contents/MacOS/Mark Text"
+	local IFS=':'
+	local app=""
+	for dir in ${SEARCH_DIRS}; do
+		for bin in ${SEARCH_BINS}; do
+			if [[ -e "$dir$bin" ]]; then
+				# app="$dir$bin"
+				app="$dir$(echo "$bin" | cut -d'/' -f1)"
+				break 2
+			fi
+		done
+	done
+	echo "$app"
+}
+
+case "$OS" in
+	Darwin )
+		# Find app
+		marktextapp="$(findMacApp)"
+		if [[ "$marktextapp" == "" ]]; then
+			>&2 echo "Error: Unable to find an installation of MarkText app."
+			exit 1
+		fi
+		open -a "$marktextapp" -- $@
+		;;
+	Linux )
+		echo "TODO, for Linux."
+		;;
+	*)
+		>&2 echo "Error: Unrecognised OS."
+		;;
+esac
