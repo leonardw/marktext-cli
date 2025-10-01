@@ -10,7 +10,7 @@ A working installation of [MarkText](https://github.com/Tkaixiang/marktext) must
 
 ## Installation
 
-Download latest [`marktext`](marktext) file and copy it into /usr/local/bin/ directory.
+Download latest [`marktext`](marktext) file and copy it into `/usr/local/bin/` directory.
 
 ```sh
 % cp marktext /usr/local/bin/
